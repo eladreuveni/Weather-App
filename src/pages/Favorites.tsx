@@ -19,15 +19,21 @@ const Favorites = () => {
     return (
         <div>
             <div className="all-favorites">
-                {loading ? <Loader /> : favorites.map((c, i) => (
-                    <CityCard
-                        key={`${c.name}, ${c.country}`}
-                        city={`${c.name}, ${c.country}`}
-                        pic={c.pic}
-                        {...c.todayWeather}
-                        day={undefined} // in order to use city
-                    />
-                ))}
+                {loading ? <Loader /> :
+                    favorites.length > 0 ?
+                        favorites.map((c, i) => (
+                            <CityCard
+                                key={`${c.name}, ${c.country}`}
+                                city={`${c.name}, ${c.country}`}
+                                pic={c.pic}
+                                {...c.todayWeather}
+                                day={undefined} // in order to use city
+                            />
+                        )) :
+                        <div>
+                            <h3>{"You don't have any favorite cities :("}</h3>
+                            <h3>{"Please add some..."}</h3>
+                        </div>}
             </div>
         </div>
     )

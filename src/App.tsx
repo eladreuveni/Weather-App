@@ -8,8 +8,9 @@ import Home from './pages/Home';
 import './App.scss';
 import { toast, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
-import { useAppSelector } from './store/hooks';
+import { useAppDispatch, useAppSelector } from './store/hooks';
 import 'react-toastify/dist/ReactToastify.css';
+import { setErrorFalse } from './store/data/dataSlice';
 
 const theme = createTheme({
   palette: {
@@ -26,6 +27,7 @@ const theme = createTheme({
 
 function App() {
   const error = useAppSelector(state => state.data.error);
+  const dispatch = useAppDispatch();
 
   // raise error toast on fetch error
   useEffect(() => {
@@ -39,6 +41,7 @@ function App() {
         draggable: true,
         progress: undefined,
       });
+      dispatch(setErrorFalse());
     }
   }, [error])
 

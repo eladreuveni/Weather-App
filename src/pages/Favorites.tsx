@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CityCard from "../components/CityCard";
 import Loader from "../components/Loader";
 import { getAllDataForFavorites } from "../store/data/dataSlice";
@@ -9,17 +9,20 @@ import './Favorites.scss';
 const Favorites = () => {
     const dispatch = useAppDispatch();
 
-    const { favoriteCitiesData: favorites, loading } = useAppSelector(state => state.data);
+    const { favoriteCitiesData: favorites } = useAppSelector(state => state.data);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        dispatch(getAllDataForFavorites());
+        setIsLoading(true);
+        dispatch(getAllDataForFavorites()).then(() => { setIsLoading(false) });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <div>
             <div className="all-favorites">
-                {loading ? <Loader /> :
+                {isLoading ? <Loader /> :
                     favorites.length > 0 ?
                         favorites.map((c, i) => (
                             <CityCard

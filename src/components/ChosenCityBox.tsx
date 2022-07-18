@@ -10,12 +10,19 @@ import Loader from "./Loader";
 
 const ChosenCityBox = () => {
     const dispatch = useAppDispatch();
-    const { searchPhotos: photos, fiveDaysForecast, chosenCityData, loading } = useAppSelector(state => state.data);
+    const { searchPhotos: photos, fiveDaysForecast, chosenCityData } = useAppSelector(state => state.data);
     const [isFavorite, setIsFavorite] = useState(isCityFavorite(chosenCityData));
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
-        dispatch(fetchCityPhotos({ city: chosenCityData.name, country: chosenCityData.country }));
-        dispatch(get5DaysForecast(`${chosenCityData.name},${chosenCityData.country}`));
+        async function fetchData() {
+            setIsLoading(true);
+            await dispatch(fetchCityPhotos({ city: chosenCityData.name, country: chosenCityData.country }));
+            await dispatch(get5DaysForecast(`${chosenCityData.name},${chosenCityData.country}`));
+            setIsLoading(false);
+        }
+        fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -50,7 +57,7 @@ const ChosenCityBox = () => {
             </div>
             <h2 className="title">Scattered Clouds</h2>
             <div className="five-cards-container">
-                {loading ? <Loader /> : fiveDaysForecast.map((d, i) => (
+                {isLoading ? <Loader /> : fiveDaysForecast.map((d, i) => (
                     <CityCard
                         key={d.day}
                         pic={photos[i + 1]?.url}

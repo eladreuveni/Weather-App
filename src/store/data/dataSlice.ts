@@ -4,7 +4,6 @@ import { getLSFavorites } from '../../utils/local-storage';
 import { fetchPhotos, getCitiesForAutoComplete, getWeatherForCity } from './thunks';
 
 export interface DataState {
-    loading: boolean;
     error: boolean;
     searchPhotos: { id: number, url: string }[];
     citiesPool: BasicCityData[];
@@ -15,7 +14,6 @@ export interface DataState {
 }
 
 const initialState: DataState = {
-    loading: false,
     error: false,
     searchPhotos: [],
     citiesPool: [],
@@ -129,15 +127,8 @@ export const dataSlice = createSlice({
             // getAllDataForFavorites
             .addCase(getAllDataForFavorites.fulfilled, (state, action) => { state.favoriteCitiesData = action.payload })
             // matchers for all functions
-            .addMatcher((action) => action.type.endsWith("/pending"), (state) => {
-                state.loading = true;
-            })
-            .addMatcher((action) => action.type.endsWith("/fulfilled"), (state) => {
-                state.loading = false;
-            })
             .addMatcher((action) => action.type.endsWith("/rejected"), (state) => {
                 state.error = true;
-                state.loading = false;
             })
     },
 });

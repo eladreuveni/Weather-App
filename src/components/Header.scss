@@ -1,0 +1,13 @@
+@import '../utils/vh.scss';
+
+.App-header {
+    width: 100%;
+    background-color: lightgray;
+    
+    .header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1%;
+    }
+}
